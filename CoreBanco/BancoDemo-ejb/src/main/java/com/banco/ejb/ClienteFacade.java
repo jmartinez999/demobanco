@@ -28,7 +28,7 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
     @PersistenceContext(unitName = "BancoPU")
     private EntityManager em;
     
-    Logger log = Logger.getLogger(this.getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(ClienteFacade.class.getName());
 
     protected EntityManager getEntityManager() {
         return em;
@@ -39,16 +39,16 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
     
     @Override
     public void crearCliente(Cliente cliente) throws BancoException{
-        log.info("Inicia crearCliente(...)");
+        LOGGER.info("Inicia crearCliente(...)");
        //Se verifica si el cliente ya existe;
         Cliente cte = findByIdentificacion(cliente.getTipoIdentificacion(), cliente.getIdentificacion());
         if(cte!= null){
             em.lock(cte, LockModeType.PESSIMISTIC_FORCE_INCREMENT);
-            log.warning("Cliente "+ cliente.getIdentificacion() + " ya existe !!");
+            LOGGER.warning("Cliente "+ cliente.getIdentificacion() + " ya existe !!");
             throw new BancoException("El cliente " +cliente.getTipoIdentificacion()+ "-" + cliente.getIdentificacion() +" ya existe en el sistema");
         }
         em.persist(cliente);
-        log.info("Finaliza crearCliente(...)");
+        LOGGER.info("Finaliza crearCliente(...)");
         
     }
     
@@ -56,14 +56,14 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     @Override
     public Cliente findByIdentificacion(TipoIdentificacion tId, long identificacion){
-        log.log(Level.FINE,"Consulta cliente {0}",  identificacion);
+        LOGGER.log(Level.FINE,"Consulta cliente {0}",  identificacion);
         Query  q = em.createNamedQuery("Cliente.findByIdentificacion");
         q.setParameter("tipoIdentificacion", tId);
         q.setParameter("identificacion", identificacion);
         try{
            return ((Cliente)q.getSingleResult());
         }catch(NoResultException nre){
-            log.log(Level.WARNING,"No se encontro cliente {0}", identificacion);
+            LOGGER.log(Level.WARNING,"No se encontro cliente {0}", identificacion);
             return null;
         }
         
@@ -77,7 +77,7 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
         }else{
             System.out.println("Cliente " + cte.getId() + " NO existe en el contexto de persistencia!" );
         }*/
-        log.log(Level.FINE,"Modificando cliente con nombre : {0} - Version: {1}", new Object[]{cte.getNombre(),cte.getVersion()} );
+        LOGGER.log(Level.FINE,"Modificando cliente con nombre : {0} - Version: {1}", new Object[]{cte.getNombre(),cte.getVersion()} );
         
         cte = em.merge(cte);
         return cte;
@@ -94,6 +94,17 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
     @Override
     public void remove(Cliente entity) {
         em.remove(entity);
+    }
+    
+    public void remove(Long id){
+      LOGGER.log(Level.FINE,"Eliminar cliente con id {0}", id);
+      Cliente cte = this.find(id);
+      if (cte!=null){
+        remove(cte);
+        LOGGER.log(Level.INFO,"Cliente eliminado correctamente");
+      }else{
+        LOGGER.log(Level.INFO, "Cliente con id {} no existe", id);
+      }
     }
     
     @Override

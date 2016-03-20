@@ -37,4 +37,6 @@ public interface IClienteFacadeRemote {
 
     void remove(Cliente entity);
     
+    public void remove(Long id);
+    
 }

@@ -8,6 +8,8 @@ package com.banco.rest;
 import com.banco.ejb.IClienteFacadeLocal;
 import com.banco.entidades.Cliente;
 import com.banco.pagination.PaginatedListWrapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -25,6 +27,8 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class ClientesResource {
 
+    private static final Logger LOGGER = Logger.getLogger(ClientesResource.class.getName());
+  
     @Context
     private UriInfo context;
 
@@ -91,6 +95,13 @@ public class ClientesResource {
     public Cliente consultarCliente(@PathParam("id") Long id){
         return facadeCliente.find(id);
 
+    }
+    
+    @DELETE
+    @Path("{id}")
+    public void eliminarCliente(@PathParam("id") Long id){
+      LOGGER.log(Level.FINE,"Request para eliminar cliente con id {0}", id);
+      facadeCliente.remove(id);
     }
 
     /**

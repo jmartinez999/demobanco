@@ -37,4 +37,6 @@ public interface IClienteFacadeLocal{
 
     void remove(Cliente entity);
     
+    void remove(Long id);
+    
 }

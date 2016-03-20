@@ -1,7 +1,7 @@
-var app = angular.module('myApp.clientes', ['ngResource', 'ngGrid', 'ui.bootstrap']);
+var app = angular.module('myApp.clientes', ['ngResource', 'ngGrid', 'ui.bootstrap','myApp.utils']);
 
 // Create a controller with name personsListController to bind to the grid section.
-app.controller('clientesListController', function ($scope, $rootScope, clienteService) {
+app.controller('clientesListController', function ($scope, $rootScope, clienteService, modalService) {
     // Initialize required information: sorting, the first page to show and the grid options.
     $scope.sortInfo = {fields: ['id'], directions: ['asc']};
     $scope.clientes = {currentPage: 1};
@@ -46,7 +46,18 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
 
     // Broadcast an event when an element in the grid is deleted. No real deletion is perfomed at this point.
     $scope.deleteRow = function (row) {
+      var clientName = row.entity.nombre;
+      var modalOptions = {
+          closeButtonText: 'Cancelar',
+          actionButtonText: 'Eliminar Cliente',
+          headerText: 'Eliminar ' + clientName,
+          bodyText: '¿Esta seguro de eliminar este cliente?'
+      };
+
+      modalService.showModal({}, modalOptions).then(function (result) {
         $rootScope.$broadcast('deleteCliente', row.entity.id);
+      });
+      
     };
 
     // Watch the sortInfo variable. If changes are detected than we need to refresh the grid.
@@ -72,6 +83,24 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
     // Picks the event broadcasted when the form is cleared to also clear the grid selection.
     $scope.$on('clear', function () {
         $scope.gridOptions.selectAll(false);
+    });
+    
+    // Picks us the event broadcasted when the person is deleted from the grid and perform the actual person delete by
+    // calling the appropiate rest service.
+    $scope.$on('deleteCliente', function (event, id) {
+      console.log('Evento eliminar cliente :' + id);
+      clienteService.delete({id: id}).$promise.then(
+          function () {
+              // Broadcast the event to refresh the grid.
+              $rootScope.$broadcast('refreshGrid');
+              // Broadcast the event to display a delete message.
+              $rootScope.$broadcast('clienteDeleted');
+              //$scope.clearForm();
+          },
+          function () {
+              // Broadcast the event for a server error.
+              $rootScope.$broadcast('error');
+          });
     });
 });
 
@@ -109,23 +138,6 @@ app.controller('clientessFormController', function ($scope, $rootScope, clienteS
     // the appropiate rest service.
     $scope.$on('clienteSelected', function (event, id) {
         $scope.cliente = clienteService.get({id: id});
-    });
-
-    // Picks us the event broadcasted when the person is deleted from the grid and perform the actual person delete by
-    // calling the appropiate rest service.
-    $scope.$on('deleteCliente', function (event, id) {
-        clienteService.delete({id: id}).$promise.then(
-            function () {
-                // Broadcast the event to refresh the grid.
-                $rootScope.$broadcast('refreshGrid');
-                // Broadcast the event to display a delete message.
-                $rootScope.$broadcast('clienteDeleted');
-                $scope.clearForm();
-            },
-            function () {
-                // Broadcast the event for a server error.
-                $rootScope.$broadcast('error');
-            });
     });
 });
 
