@@ -71,17 +71,9 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
     
     @Override
     public Cliente modificarCliente(Cliente cte){
-       /* 
-       if (em.contains(cte)){
-            System.out.println("Cliente " + cte.getId() + " SI existe en el contexto de persistencia!" );
-        }else{
-            System.out.println("Cliente " + cte.getId() + " NO existe en el contexto de persistencia!" );
-        }*/
         LOGGER.log(Level.FINE,"Modificando cliente con nombre : {0} - Version: {1}", new Object[]{cte.getNombre(),cte.getVersion()} );
-        
         cte = em.merge(cte);
         return cte;
-        
     }
     
     @Override

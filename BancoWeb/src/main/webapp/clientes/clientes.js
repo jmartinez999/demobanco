@@ -1,10 +1,12 @@
-var app = angular.module('myApp.clientes', ['ngResource', 'ngGrid', 'ui.bootstrap','myApp.utils']);
+var app = angular.module('myApp.clientes', 
+  ['ngResource', 'ngGrid', 'ui.bootstrap','ui.router','myApp.utils','myApp.services']);
 
-// Create a controller with name personsListController to bind to the grid section.
-app.controller('clientesListController', function ($scope, $rootScope, clienteService, modalService) {
+// Create a controller with name clientesListController to bind to the grid section.
+app.controller('clientesListController', function ($scope, $rootScope,$state ,clienteService, modalService) {
     // Initialize required information: sorting, the first page to show and the grid options.
     $scope.sortInfo = {fields: ['id'], directions: ['asc']};
     $scope.clientes = {currentPage: 1};
+    $scope.searchText = null;
 
     $scope.gridOptions = {
         data: 'clientes.list',
@@ -17,8 +19,9 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
             { field: 'identificacion', displayName: 'Numero'},
             { field: 'nombre', displayName: 'Nombre'},
             { field: 'genero', displayName: 'Genero'},
-            { field: '', width: 30, 
-                cellTemplate: '<span class="glyphicon glyphicon-trash remove" ng-click="deleteRow(row)"></span>' }
+            { field: '', width: 80, 
+                cellTemplate: '<span class="glyphicon glyphicon-trash remove" ng-click="deleteRow(row)"></span>'+
+                '<span class="glyphicon glyphicon-edit modify" ng-click="updateRow(row)"></span>' }
         ],
 
         multiSelect: false,
@@ -27,8 +30,13 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
         afterSelectionChange: function (rowItem) {
             if (rowItem.selected) {
                 $rootScope.$broadcast('clienteSelected', $scope.gridOptions.selectedItems[0].id);
+                console.log('Se emitio evento <clienteSelected>');
             }
         }
+    };
+    
+    $scope.searchTextChanged = function(){
+      console.log('Ingreso a funcion searchTextChanged');
     };
 
     // Refresh the grid, calling the appropriate rest method.
@@ -59,6 +67,11 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
       });
       
     };
+    
+    $scope.updateRow = function(row){
+      var idCliente = row.entity.id;
+      $state.go("modificarCliente", {'idCliente':idCliente});
+    }
 
     // Watch the sortInfo variable. If changes are detected than we need to refresh the grid.
     // This also works for the first page access, since we assign the initial sorting in the initialize section.
@@ -104,43 +117,6 @@ app.controller('clientesListController', function ($scope, $rootScope, clienteSe
     });
 });
 
-// Create a controller with name personsFormController to bind to the form section.
-app.controller('clientessFormController', function ($scope, $rootScope, clienteService) {
-    // Clears the form. Either by clicking the 'Clear' button in the form, or when a successfull save is performed.
-    $scope.clearForm = function () {
-        $scope.cliente = null;
-        // For some reason, I was unable to clear field values with type 'url' if the value is invalid.
-        // This is a workaroud. Needs proper investigation.
-        //document.getElementById('imageUrl').value = null;
-        // Resets the form validation state.
-        $scope.clienteForm.$setPristine();
-        // Broadcast the event to also clear the grid selection.
-        $rootScope.$broadcast('clear');
-    };
-
-    // Calls the rest method to save a person.
-    $scope.updateCliente = function () {
-        clienteService.save($scope.cliente).$promise.then(
-            function () {
-                // Broadcast the event to refresh the grid.
-                $rootScope.$broadcast('refreshGrid');
-                // Broadcast the event to display a save message.
-                $rootScope.$broadcast('clienteSaved');
-                $scope.clearForm();
-            },
-            function () {
-                // Broadcast the event for a server error.
-                $rootScope.$broadcast('error');
-            });
-    };
-
-    // Picks up the event broadcasted when the person is selected from the grid and perform the person load by calling
-    // the appropiate rest service.
-    $scope.$on('clienteSelected', function (event, id) {
-        $scope.cliente = clienteService.get({id: id});
-    });
-});
-
 // Create a controller with name alertMessagesController to bind to the feedback messages section.
 app.controller('alertMessagesController', function ($scope) {
     // Picks up the event to display a saved message.
@@ -167,9 +143,4 @@ app.controller('alertMessagesController', function ($scope) {
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-});
-
-// Service that provides persons operations
-app.factory('clienteService', function ($resource) {
-    return $resource('/Banco/api/clientes/:id');
 });

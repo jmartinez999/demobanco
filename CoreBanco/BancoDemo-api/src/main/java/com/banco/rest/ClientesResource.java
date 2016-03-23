@@ -111,11 +111,15 @@ public class ClientesResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void guardarCliente(Cliente cliente) {
-        try {
-            facadeCliente.crearCliente(cliente);
-        }catch (Exception e){
-            //TODO Definir manejo
+      try {
+        if (cliente.getId() == null){
+          facadeCliente.crearCliente(cliente);
+        }else{
+          facadeCliente.modificarCliente(cliente);
         }
-
+      }catch (Exception e){
+          //TODO Definir manejo
+          LOGGER.log(Level.SEVERE, "Houston, estamos en problemas ...", e);
+      }
     }
 }

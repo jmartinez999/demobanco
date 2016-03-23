@@ -4,6 +4,7 @@
  */
 package com.banco.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -27,6 +28,9 @@ import javax.validation.constraints.Size;
  *
  * @author jmartinez
  */
+//Se agrega la anotacion @JsonIgnoreProperties para evitar error:
+//com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "$promise"
+@JsonIgnoreProperties(ignoreUnknown = true) 
 @Entity
 @Table(name = "CLIENTE")
 @NamedQueries({
