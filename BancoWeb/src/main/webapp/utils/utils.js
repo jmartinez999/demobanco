@@ -3,7 +3,7 @@
  * http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
  * 
  */
-var utils = angular.module('myApp.utils', []);
+var utils = angular.module('app.utils', []);
 utils.service('modalService', ['$modal', function ($modal) {
   var modalDefaults = {
     backdrop: true,

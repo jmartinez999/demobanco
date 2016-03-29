@@ -1,8 +1,8 @@
-var app = angular.module('myApp.formularios', 
-      ['ngResource', 'ui.bootstrap','myApp.services']);
-
+'use strict';
+var app = angular.module('demobanco');
 // Create a controller with name personsFormController to bind to the form section.
-app.controller('clienteFormController', function ($scope, $rootScope, $stateParams, $state, clienteService) {
+app.controller('clienteFormController', function ($scope, $rootScope, $stateParams, $state, 
+          clienteService,modalService) {
   
   $scope.cliente={};
   
@@ -50,8 +50,7 @@ app.controller('clienteFormController', function ($scope, $rootScope, $statePara
       $rootScope.$broadcast('refreshGrid');
       // Broadcast the event to display a save message.
       $rootScope.$broadcast('clienteSaved');
-      $scope.clearForm();
-      $state.go('clientes');
+      
     },
     function () {
       // Broadcast the event for a server error.
@@ -66,6 +65,22 @@ app.controller('clienteFormController', function ($scope, $rootScope, $statePara
     $scope.cliente = clienteService.get({id: id});
   });
   
+  $scope.$on('clienteSaved', function(){
+    var modalOptions = {
+          //closeButtonText: 'Cancelar',
+          actionButtonText: 'Continuar',
+          headerText: 'Resultado de operación',
+          bodyText: 'Operación existosa!'
+      };
+
+      modalService.showModal({}, modalOptions).then(function () {
+        $scope.clearForm();
+        $state.go('clientes');
+      });
+  });
+  
+  $scope.cancelar = function(){
+    $state.go('clientes');
+  };
+  
 });
-
-

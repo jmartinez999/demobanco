@@ -1,6 +1,4 @@
-var app = angular.module('myApp.clientes', 
-  ['ngResource', 'ngGrid', 'ui.bootstrap','ui.router','myApp.utils','myApp.services']);
-
+var app = angular.module('demobanco');
 // Create a controller with name clientesListController to bind to the grid section.
 app.controller('clientesListController', function ($scope, $rootScope,$state ,clienteService, modalService) {
     // Initialize required information: sorting, the first page to show and the grid options.
@@ -71,7 +69,7 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
     $scope.updateRow = function(row){
       var idCliente = row.entity.id;
       $state.go("modificarCliente", {'idCliente':idCliente});
-    }
+    };
 
     // Watch the sortInfo variable. If changes are detected than we need to refresh the grid.
     // This also works for the first page access, since we assign the initial sorting in the initialize section.
@@ -84,15 +82,15 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
     // The grid throws the ngGridEventSorted that gets picked up here and assigns the sortInfo to the scope.
     // This will allow to watch the sortInfo in the scope for changed and refresh the grid.
     $scope.$on('ngGridEventSorted', function (event, sortInfo) {
-        $scope.sortInfo = sortInfo;
+      $scope.sortInfo = sortInfo;
     });
 
     // Picks the event broadcasted when a person is saved or deleted to refresh the grid elements with the most
     // updated information.
     $scope.$on('refreshGrid', function () {
-        $scope.refreshGrid();
+      $scope.refreshGrid();
     });
-
+    
     // Picks the event broadcasted when the form is cleared to also clear the grid selection.
     $scope.$on('clear', function () {
         $scope.gridOptions.selectAll(false);

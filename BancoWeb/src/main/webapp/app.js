@@ -1,7 +1,6 @@
 'use strict';
-
 // Declare app level module which depends on views, and components
-var app = angular.module('myApp', ['ui.router','myApp.clientes','myApp.formularios']);
+var app = angular.module('demobanco', ['ui.router','ngResource', 'ui.bootstrap','ngResource','ngGrid','app.utils']);
 
 app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
   $urlRouterProvider.otherwise("/home");
