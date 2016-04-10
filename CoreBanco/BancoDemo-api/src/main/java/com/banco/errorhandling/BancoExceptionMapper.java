@@ -11,7 +11,6 @@ import java.io.StringWriter;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 /**
  *
@@ -21,20 +20,18 @@ public class BancoExceptionMapper implements ExceptionMapper<BancoException> {
 
     public Response toResponse(BancoException ex) {
         ErrorMessage errorMessage = new ErrorMessage();
-        //setHttpStatus(ex, errorMessage);
-        errorMessage.setCode(9999);
+        errorMessage.setCode(ex.getErrorCode());
+        errorMessage.setStatus(Response.Status.BAD_REQUEST.getStatusCode());
         errorMessage.setMessage(ex.getMessage());
         StringWriter errorStackTrace = new StringWriter();
         ex.printStackTrace(new PrintWriter(errorStackTrace));
         errorMessage.setDeveloperMessage(errorStackTrace.toString());
-        errorMessage.setLink("www.banco.com");
+        errorMessage.setLink("www.banco.com/soporte");
 
         return Response.status(errorMessage.getStatus())
                 .entity(errorMessage)
                 .type(MediaType.APPLICATION_JSON)
                 .build();
-
-        
     }
 
 }

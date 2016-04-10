@@ -5,18 +5,23 @@
 package com.banco.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -78,10 +83,10 @@ public class Cliente implements Serializable {
    @Temporal(TemporalType.DATE)
    private Date fechaNacimiento;
 
-   /*
+   
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId", fetch = FetchType.LAZY)
    private Collection<Cuenta> cuentas;
-  */
+  
 
    @Version
    @Column(name = "VERSION")
@@ -137,7 +142,7 @@ public class Cliente implements Serializable {
       this.fechaNacimiento = fechaNacimiento;
    }
 
-   /*
+   @JsonIgnore
    public Collection<Cuenta> getCuentas() {
       return cuentas;
    }
@@ -145,7 +150,7 @@ public class Cliente implements Serializable {
    public void setCuentas(Collection<Cuenta> cuentas) {
       this.cuentas = cuentas;
    }
-   */
+   
 
    @Override
    public int hashCode() {

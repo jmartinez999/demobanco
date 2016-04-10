@@ -3,3 +3,6 @@
 /CoreBanco/BancoDemo-api/target/
 /CoreBanco/BancoDemo-ear/target/
 /BancoWeb/target/
+*.iml
+/CoreBanco/.idea/
+.idea/

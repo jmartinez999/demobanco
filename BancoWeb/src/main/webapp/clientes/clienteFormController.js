@@ -47,14 +47,18 @@ app.controller('clienteFormController', function ($scope, $rootScope, $statePara
     clienteService.save($scope.cliente).$promise.then(
     function () {
       // Broadcast the event to refresh the grid.
-      $rootScope.$broadcast('refreshGrid');
+      //$rootScope.$broadcast('refreshGrid');
       // Broadcast the event to display a save message.
       $rootScope.$broadcast('clienteSaved');
       
     },
-    function () {
+    function (response) {
       // Broadcast the event for a server error.
-      $rootScope.$broadcast('error');
+      console.log('Mensaje error:'+ response.data.message);
+      console.log('Codigo error :' + response.data.code);
+      console.log('Status:'+ response.status );
+      
+      $rootScope.$broadcast('error', response.data.message);
     });
   };
 

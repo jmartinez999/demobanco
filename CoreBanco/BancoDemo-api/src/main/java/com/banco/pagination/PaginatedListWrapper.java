@@ -1,27 +1,33 @@
 package com.banco.pagination;
 
-import com.banco.entidades.Cliente;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wraps all the information needed to paginate a table.
- *
- * @author Roberto Cortez
+ * Basado en implementación de Roberto Cortez
+ * @author jmartinez
+ * @param <T> Tipo generico para la lista de entidades a paginar
  */
 @XmlRootElement
-public class PaginatedListWrapper implements Serializable {
+public class PaginatedListWrapper<T> implements Serializable {
+    
     private Integer currentPage;
     private Integer pageSize;
     private Integer totalResults;
 
     private String sortFields;
     private String sortDirections;
+    
+    private static final Logger LOGGER = Logger.getLogger(PaginatedListWrapper.class.getName());
+            
     @XmlElement
-    private List<Cliente> list;
+    private List<T> list;
 
     public Integer getCurrentPage() {
         return currentPage;
@@ -63,11 +69,12 @@ public class PaginatedListWrapper implements Serializable {
         this.sortDirections = sortDirections;
     }
 
-    public List getList() {
+    public List<T> getList() {
         return list;
     }
 
-    public void setList(List<Cliente> list) {
-        this.list = list;
+    public void setList(List<T> list) {
+      LOGGER.log(Level.FINEST,"Se inicializa lista en PaginatedListWrapper.setList()");
+      this.list = list;
     }
 }

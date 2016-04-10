@@ -25,12 +25,13 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
         multiSelect: false,
         selectedItems: [],
         // Broadcasts an event when a row is selected, to signal the form that it needs to load the row data.
+        /*
         afterSelectionChange: function (rowItem) {
             if (rowItem.selected) {
                 $rootScope.$broadcast('clienteSelected', $scope.gridOptions.selectedItems[0].id);
                 console.log('Se emitio evento <clienteSelected>');
             }
-        }
+        }*/
     };
     
     $scope.searchTextChanged = function(){
@@ -39,6 +40,7 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
 
     // Refresh the grid, calling the appropriate rest method.
     $scope.refreshGrid = function () {
+        console.log('Se invoca refrescar grilla');
         var listClientesArgs = {
             page: $scope.clientes.currentPage,
             sortFields: $scope.sortInfo.fields[0],
@@ -49,6 +51,9 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
             $scope.clientes = data;
         });
     };
+    
+    //Se llena la grilla al cargar la pagina por primera vez
+    $scope.refreshGrid();
 
     // Broadcast an event when an element in the grid is deleted. No real deletion is perfomed at this point.
     $scope.deleteRow = function (row) {
@@ -71,13 +76,18 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
       $state.go("modificarCliente", {'idCliente':idCliente});
     };
 
+
     // Watch the sortInfo variable. If changes are detected than we need to refresh the grid.
     // This also works for the first page access, since we assign the initial sorting in the initialize section.
+    /* Se ejecuta el refresco 2 veces por cada invocacion, esto genera problemas de rendimiento
     $scope.$watch('sortInfo', function () {
         $scope.clientes = {currentPage: 1};
         $scope.refreshGrid();
     }, true);
-
+   */
+   
+    
+   
     // Do something when the grid is sorted.
     // The grid throws the ngGridEventSorted that gets picked up here and assigns the sortInfo to the scope.
     // This will allow to watch the sortInfo in the scope for changed and refresh the grid.
@@ -115,30 +125,4 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
     });
 });
 
-// Create a controller with name alertMessagesController to bind to the feedback messages section.
-app.controller('alertMessagesController', function ($scope) {
-    // Picks up the event to display a saved message.
-    $scope.$on('clienteSaved', function () {
-        $scope.alerts = [
-            { type: 'success', msg: 'Record saved successfully!' }
-        ];
-    });
 
-    // Picks up the event to display a deleted message.
-    $scope.$on('clienteDeleted', function () {
-        $scope.alerts = [
-            { type: 'success', msg: 'Record deleted successfully!' }
-        ];
-    });
-
-    // Picks up the event to display a server error message.
-    $scope.$on('error', function () {
-        $scope.alerts = [
-            { type: 'danger', msg: 'There was a problem in the server!' }
-        ];
-    });
-
-    $scope.closeAlert = function (index) {
-        $scope.alerts.splice(index, 1);
-    };
-});
