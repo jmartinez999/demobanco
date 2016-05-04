@@ -8,6 +8,8 @@ import com.banco.entidades.Cliente;
 import com.banco.entidades.TipoIdentificacion;
 import com.banco.exceptions.BancoErrorCode;
 import com.banco.exceptions.BancoException;
+import com.banco.util.JMSUtil;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +53,7 @@ public class ClienteFacade implements IClienteFacadeRemote, IClienteFacadeLocal 
               "El cliente " + cliente.getTipoIdentificacion() + "-" + cliente.getIdentificacion() + " ya existe en el sistema");
     }
     em.persist(cliente);
+    JMSUtil.sendMessage(cliente,"java:/jms/queue/BancoQueue");
     LOGGER.info("Finaliza crearCliente(...)");
 
   }

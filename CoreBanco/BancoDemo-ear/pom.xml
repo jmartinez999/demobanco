@@ -36,6 +36,14 @@
                 <configuration>
                     <version>6</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                        <webModule>
+                            <groupId>com.ucentral</groupId>
+                            <artifactId>BancoDemo-api</artifactId>
+                            <contextRoot>/Banco</contextRoot>
+                        </webModule>
+                    </modules>
+                    <fileNameMapping>no-version</fileNameMapping>
                 </configuration>
             </plugin>
         </plugins>

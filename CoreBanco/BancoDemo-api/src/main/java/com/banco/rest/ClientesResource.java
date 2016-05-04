@@ -5,8 +5,11 @@
  */
 package com.banco.rest;
 
+import com.banco.dto.ClienteSaldos;
 import com.banco.ejb.IClienteFacadeLocal;
 import com.banco.entidades.Cliente;
+import com.banco.entidades.Cuenta;
+import com.banco.entidades.TipoIdentificacion;
 import com.banco.errorhandling.ErrorMessage;
 import com.banco.exceptions.BancoException;
 import com.banco.pagination.PaginatedListWrapper;
@@ -104,9 +107,25 @@ public class ClientesResource {
   @GET
   @Path("{id}/saldos")
   @Produces(MediaType.APPLICATION_JSON)
-  public String consultarSaldosCliente(@PathParam("id") Long id) {
-    return new String("{saldoTotal:'3500000'}");
+  public Response consultarSaldosCliente(@PathParam("id") Long id) {
 
+    // Dummy para ejemplo
+    ClienteSaldos cteSaldos = new ClienteSaldos();
+
+    Cliente cte = new Cliente();
+    cte.setTipoIdentificacion(TipoIdentificacion.CC);
+    cte.setIdentificacion(79660998);
+    cteSaldos.setCte(cte);
+
+    Cuenta ctaUno = new Cuenta();
+    ctaUno.setSaldo(500000);
+    cteSaldos.addCuenta(ctaUno);
+
+    Cuenta ctaDos = new Cuenta();
+    ctaDos.setSaldo(350000);
+    cteSaldos.addCuenta(ctaDos);
+
+    return Response.ok().entity(cteSaldos).type(MediaType.APPLICATION_JSON).build();
   }
 
   @DELETE

@@ -71,13 +71,13 @@ app.controller('clienteFormController', function ($scope, $rootScope, $statePara
   
   $scope.$on('clienteSaved', function(){
     var modalOptions = {
-          //closeButtonText: 'Cancelar',
+          //closeButtonText: 'Cerrar',
           actionButtonText: 'Continuar',
           headerText: 'Resultado de operación',
           bodyText: 'Operación existosa!'
       };
 
-      modalService.showModal({}, modalOptions).then(function () {
+      modalService.showModal({}, modalOptions,true).then(function () {
         $scope.clearForm();
         $state.go('clientes');
       });

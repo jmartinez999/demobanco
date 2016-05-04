@@ -4,6 +4,7 @@
  * 
  */
 var utils = angular.module('app.utils', []);
+
 utils.service('modalService', ['$modal', function ($modal) {
   var modalDefaults = {
     backdrop: true,
@@ -19,10 +20,13 @@ utils.service('modalService', ['$modal', function ($modal) {
     bodyText: '¿Realizar esta accion?'
   };
 
-  this.showModal = function (customCfgDefault, customModalOptions) {
+  this.showModal = function (customCfgDefault, customModalOptions, isAlert) {
     if (!customCfgDefault)
       customCfgDefault = {};
     customCfgDefault.backdrop = 'static';
+    if(isAlert === true){
+      customCfgDefault.templateUrl = 'utils/modalAlert.html';
+    }
     return this.show(customCfgDefault, customModalOptions);
   };
 

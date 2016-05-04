@@ -76,8 +76,8 @@ app.controller('testController',function ($scope, $rootScope, $stateParams, $sta
 
     console.log('Invocando consulta de saldos para Cliente:'+ id );
     clienteService.consultarSaldos({idCliente:id}).$promise.then(
-        function (response){ //caso de exito
-            console.log('Saldo total: $' + response.data.saldoTotal);
+        function (data){ //caso de exito
+            console.log('Saldo total: $' + data.saldoTotal);
 
         },
         function(response){ //Caso de error
