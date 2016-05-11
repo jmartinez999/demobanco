@@ -9,6 +9,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.order_updates" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>

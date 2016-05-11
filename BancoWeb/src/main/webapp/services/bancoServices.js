@@ -14,5 +14,8 @@ myModule.factory('clienteService', function ($resource) {
     );
 });
 
+myModule.factory('auditoriaService', function ($resource) {
+    return $resource('/Banco/api/auditoria/');
+});
 
 

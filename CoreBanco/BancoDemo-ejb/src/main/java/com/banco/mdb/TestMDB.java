@@ -32,8 +32,8 @@ public class TestMDB implements MessageListener{
   public void onMessage(Message message) {
     LOGGER.info("Se recibio mensaje JMS ");
     try {
-      LOGGER.finest("Esperando 10 segungos ..... ");
-      Thread.sleep(10000);//Espera 10 segundos
+      LOGGER.finest("Esperando 20 segundos ..... ");
+      Thread.sleep(20000);//Espera 10 segundos
     }catch (InterruptedException ie){
       LOGGER.log(Level.WARNING,"Problemas con sleep del Thread", ie);
     }

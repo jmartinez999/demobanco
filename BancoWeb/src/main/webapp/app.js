@@ -71,9 +71,9 @@ app.controller('alertMessagesController', function ($scope) {
 });
 
 app.controller('testController',function ($scope, $rootScope, $stateParams, $state,
-                                          clienteService,modalService) {
-  $scope.consultarSaldosCliente = function(id){
+                                          clienteService,modalService,auditoriaService) {
 
+  $scope.consultarSaldosCliente = function(id){
     console.log('Invocando consulta de saldos para Cliente:'+ id );
     clienteService.consultarSaldos({idCliente:id}).$promise.then(
         function (data){ //caso de exito
@@ -86,4 +86,18 @@ app.controller('testController',function ($scope, $rootScope, $stateParams, $sta
           console.log('Status:'+ response.status );
         }
     )};
+
+  $scope.iniciarAuditoria = function(){
+     console.log('Se inicia invocacion a Auditoria');
+     auditoriaService.get().$promise.then(
+     function (data){ //caso de exito
+         console.log('Id Proceso :' + data.numeroProceso);
+         alert("Se creo proceso de auditoria No." +  data.numeroProceso );
+     },
+     function(response){ //Caso de error
+         console.log('Mensaje error:'+ response.data.message);
+         console.log('Codigo error :' + response.data.code);
+         console.log('Status:'+ response.status );
+     }
+  )};
 });
