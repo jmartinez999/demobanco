@@ -105,6 +105,29 @@ public class ClientesResource {
   }
 
   @GET
+  @Path("/tipo/{tipoId}/numero/{identificacion}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response consultarCliente(@PathParam("tipoId") String tipoId, @PathParam("identificacion") Long numero) {
+    LOGGER.log(Level.FINEST, tipoId + " - Numero de identificacion: {0}",numero);
+    //TODO Obtener la enumeracion a partir del String recibido
+    TipoIdentificacion enumTipoIdentificacion = TipoIdentificacion.valueOf(tipoId);
+    Cliente cte =  facadeCliente.findByIdentificacion(enumTipoIdentificacion,numero);
+    return Response.ok().entity(cte).type(MediaType.APPLICATION_JSON).build();
+  }
+
+
+  @GET
+  @Path("/{tipoId}/{numero}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response consultarClienteV2(@PathParam("tipoId") String tipoId, @PathParam("numero") Long numero) {
+    LOGGER.log(Level.FINEST, "V2 :: "+ tipoId + " - Numero: {0}",numero);
+    //TODO Obtener la enumeracion a partir del String recibido
+    TipoIdentificacion enumTipoIdentificacion = TipoIdentificacion.valueOf(tipoId);
+    Cliente cte =  facadeCliente.findByIdentificacion(enumTipoIdentificacion,numero);
+    return Response.ok().entity(cte).type(MediaType.APPLICATION_JSON).build();
+  }
+
+  @GET
   @Path("{id}/saldos")
   @Produces(MediaType.APPLICATION_JSON)
   public Response consultarSaldosCliente(@PathParam("id") Long id) {

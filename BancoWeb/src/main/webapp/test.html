@@ -5,7 +5,12 @@
 
     <div>
         <form name="testForm" >
+            <label ng-repeat="rol in roles">
+                <input type="checkbox" checklist-model="items" checklist-value="rol"> {{rol.nombreRol}}
+            </label>
+
             <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="testCheckbox()">Probar Checkbox</button>
                 <button type="button" class="btn btn-primary" ng-click="consultarSaldosCliente(1)">Probar</button>
                 <button type="button" class="btn btn-primary" ng-click="iniciarAuditoria()">Auditoria</button>
             </div>

@@ -73,6 +73,28 @@ app.controller('alertMessagesController', function ($scope) {
 app.controller('testController',function ($scope, $rootScope, $stateParams, $state,
                                           clienteService,modalService,auditoriaService) {
 
+  $scope.roles = [
+      {idRol: '1',nombreRol:'Medico'},
+      {idRol: '2',nombreRol:'Paciente'},
+      {idRol: '3',nombreRol:'Admin'},
+    ];
+
+  /*
+  $scope.items=[
+    {idRol: '-1',nombreRol:'N/A'}
+  ];*/
+  $scope.items=[];
+
+  $scope.testCheckbox = function(){
+    if ($scope.items.length == 0){
+        console.log('No hay items seleccionados ...');
+    }
+    var index= 0;
+    for (; index < $scope.items.length; index++){
+        console.log('Item :' +index + ' -- ' + $scope.items[index]);
+    }
+  }
+
   $scope.consultarSaldosCliente = function(id){
     console.log('Invocando consulta de saldos para Cliente:'+ id );
     clienteService.consultarSaldos({idCliente:id}).$promise.then(
