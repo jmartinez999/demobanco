@@ -5,9 +5,14 @@
 
     <div>
         <form name="testForm" >
-            <label ng-repeat="rol in roles">
-                <input type="checkbox" checklist-model="items" checklist-value="rol"> {{rol.nombreRol}}
-            </label>
+          <div class="panel">
+            <div ng-repeat="rol in roles">
+              <div class="action-checkbox">
+                  <input id="{{rol.idRol}}" type="checkbox" value="rol" ng-checked="items.indexOf(rol) > -1"
+                          ng-click="toggleSelection(rol)"/>{{rol.nombreRol}}
+              </div>
+            </div>
+          </div>
 
             <div class="buttons">
                 <button type="button" class="btn btn-primary" ng-click="testCheckbox()">Probar Checkbox</button>

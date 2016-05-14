@@ -85,13 +85,26 @@ app.controller('testController',function ($scope, $rootScope, $stateParams, $sta
   ];*/
   $scope.items=[];
 
+  $scope.toggleSelection = function(idRol){
+    var index = $scope.items.indexOf(idRol);
+    if( index > -1){ //Ya existe en los items seleccionados, >> se debe eliminar
+      $scope.items.splice(index,1); //-- Se elimina el item del arreglo
+    }else{ //Si no existen en el arreglo se adiciona
+      $scope.items.push(idRol);
+    }
+  }
+
   $scope.testCheckbox = function(){
     if ($scope.items.length == 0){
         console.log('No hay items seleccionados ...');
-    }
-    var index= 0;
-    for (; index < $scope.items.length; index++){
-        console.log('Item :' +index + ' -- ' + $scope.items[index]);
+    }else{
+      var index= 0;
+      var cadenaRoles ="";
+      for (; index < $scope.items.length; index++){
+        console.log($scope.items[index].idRol + ' -- ' + $scope.items[index].nombreRol);
+        cadenaRoles = cadenaRoles + $scope.items[index].nombreRol + ";"
+      }
+      alert("Seleccionó: " + cadenaRoles);
     }
   }
 
