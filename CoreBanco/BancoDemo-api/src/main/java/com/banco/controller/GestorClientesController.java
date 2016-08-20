@@ -91,7 +91,7 @@ public class GestorClientesController implements Serializable {
       log.log(Level.FINE,"Se invoca acción elimar cliente {0}",  clienteSelected.getIdentificacion());
       String msg = "Cliente eliminado con exito !!!";
       try {
-         ejbCliente.remove(clienteSelected);
+         ejbCliente.remove(clienteSelected.getId());
          listaClientes.remove(clienteSelected);
       } catch (Exception be) {
          msg = be.getMessage();
