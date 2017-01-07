@@ -1,4 +1,4 @@
---Crear modelo de Datos
+--Crear modelo de Datos para iniciar el esquema
 select count (1) from cuenta;
 
 select nextval('control_auditoria_seq') as num;
