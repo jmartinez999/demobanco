@@ -1,3 +1,4 @@
+--Crear modelo de Datos
 select count (1) from cuenta;
 
 select nextval('control_auditoria_seq') as num;
