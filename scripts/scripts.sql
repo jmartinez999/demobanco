@@ -1,5 +1,7 @@
+
 select count (1) from cuenta;
 
+# Nuevo comentario en codigo dentro de branch feature_2
 select nextval('control_auditoria_seq') as num;
 select nextval('detalle_auditoria_seq') as num;
 
