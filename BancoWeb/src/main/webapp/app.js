@@ -23,6 +23,12 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
       controller: 'clienteFormController'
     })
     
+    .state('crearCuenta',{
+      url: '/crearCuenta',
+      templateUrl: 'cuentas/formularioCuenta.html',
+      controller: 'cuentaFormController'
+    })
+    
     .state('modificarCliente',{
       url: '/modificarCliente',
       templateUrl: 'clientes/formularioCliente.html',
@@ -49,9 +55,15 @@ app.controller('alertMessagesController', function ($scope) {
 
     // Picks up the event to display a deleted message.
     $scope.$on('clienteDeleted', function () {
+        console.log('Ingreso a evento clienteDelete...');
         $scope.alerts = [
-            { type: 'success', msg: 'Record eliminado con éxito!' }
+            { type: 'success', msg: 'Registro eliminado con éxito!' }
         ];
+    });
+    
+    $scope.$on('clearAlerts', function () {
+        console.log('Ingreso a evento clearAlerts...');
+        $scope.alerts = [];
     });
 
     // Picks up the event to display a server error message.

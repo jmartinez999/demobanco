@@ -1,0 +1,64 @@
+<div class="col-md-6 col-md-offset-3">
+  
+  <div>
+    <!-- Specify the function to be called on submit and disable HTML5 validation, since we're using Angular validation-->
+    <form class="form-horizontal" name="cuentaForm" ng-submit="createCuenta()" novalidate>
+      
+      <div class="form-group" ng-class="{'has-error' : cuentaForm.IdTI.$invalid && cuentaForm.IdTI.$dirty}">
+        <label for="IdTI">Tipo identificacion:</label>
+        <!-- Display a check when the field is valid and was modified -->
+        <span ng-class="{'glyphicon glyphicon-ok' : cuentaForm.IdTI.$valid && cuentaForm.IdTI.$dirty}"></span>
+        <select name="IdTI" id="IdTI" ng-model="nuevaCuenta.tipoIDCliente" required>
+          <option ng-repeat="option in listaTiposIdentificacion" value="{{option.id}}">{{option.name}}</option>
+        </select>
+        
+      </div>
+      
+      <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+      <div class="form-group" ng-class="{'has-error' : cuentaForm.IdentificacionCliente.$invalid && cuentaForm.IdentificacionCliente.$dirty}">
+        <label for="identification">Identificacion:</label>
+        <!-- Display a check when the field is valid and was modified -->
+        <span ng-class="{'glyphicon glyphicon-ok' : cuentaForm.IdentificacionCliente.$valid && cuentaForm.IdentificacionCliente.$dirty}"></span>
+
+        <input id="IdentificacionCliente" name="IdentificacionCliente" type="number" class="form-control" maxlength="20"
+               ng-model="nuevaCuenta.numIdCliente" required ng-minlength="2" ng-maxlength="20"
+               ng-blur="buscarCliente()"
+               placeholder="Ingrese el número de identificación"/>
+
+        <!-- Validation messages to be displayed on required, minlength and maxlength -->
+        <p class="help-block" ng-show="cuentaForm.IdentificacionCliente.$error.minlength">Debe tener al menos 3 digitos.</p>
+        <p class="help-block" ng-show="cuentaForm.IdentificacionCliente.$error.maxlength">La identifiacion no debe superar 20 digitos.</p>
+      </div>
+      
+      <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+      <div class="form-group">
+        <label for="nombreCliente">Nombre:</label>
+        <input id="name" name="name" type="text" class="form-control" maxlength="50" disabled="true"
+               ng-model="cliente.nombre"  required ng-minlength="2" ng-maxlength="50"/>
+
+      </div>
+      
+ 
+      
+      <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+      <div class="form-group" ng-class="{'has-error' : cuentaForm.valorApertura.$invalid && cuentaForm.valorApertura.$dirty}">
+        <label for="valorApertura">Valor apertura $:</label>
+        <!-- Display a check when the field is valid and was modified -->
+        <span ng-class="{'glyphicon glyphicon-ok' : cuentaForm.valorApertura.$valid && cuentaForm.valorApertura.$dirty}"></span>
+
+        <input id="valorApertura" name="valorApertura" type="number" class="form-control" 
+               ng-model="nuevaCuenta.valorInicial"
+               required ng-minlength="5" ng-maxlength="20"/>
+
+        <!-- Validation messages to be displayed on required, minlength and maxlength -->
+        <p class="help-block" ng-show="cuentaForm.valorApertura.$error.required">Ingrese valor de apertura para la cuenta.</p>
+      </div>
+
+      <!-- Form buttons. The 'Save' button is only enabled when the form is valid. -->
+      <div class="buttons">
+        <button type="button" class="btn btn-primary" ng-click="cancelar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="cuentaForm.$invalid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

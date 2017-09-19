@@ -120,7 +120,7 @@ public class ClientesResource {
   @Path("/{tipoId}/{numero}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response consultarClienteV2(@PathParam("tipoId") String tipoId, @PathParam("numero") Long numero) {
-    LOGGER.log(Level.FINEST, "V2 :: "+ tipoId + " - Numero: {0}",numero);
+    LOGGER.log(Level.INFO, "V2 :: "+ tipoId + " - Numero: {0}",numero);
     //TODO Obtener la enumeracion a partir del String recibido
     TipoIdentificacion enumTipoIdentificacion = TipoIdentificacion.valueOf(tipoId);
     Cliente cte =  facadeCliente.findByIdentificacion(enumTipoIdentificacion,numero);

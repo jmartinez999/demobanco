@@ -9,9 +9,19 @@ myModule.factory('clienteService', function ($resource) {
             method: 'GET',
             url: '/Banco/api/clientes/:idCliente/saldos',
             params:{idCliente:'@idCliente'}
+        },
+        
+        buscarCliente:{
+            method: 'GET',
+            url: '/Banco/api/clientes/:tipoID/:numeroID',
+            params:{tipoID:'@tipoIdentificacion',numeroID:'@numIdentificacion'}
         }
       }
     );
+});
+
+myModule.factory('cuentaService', function ($resource) {
+    return $resource('/Banco/api/cuentas/:id');
 });
 
 myModule.factory('auditoriaService', function ($resource) {

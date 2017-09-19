@@ -55,8 +55,11 @@ public class JMSUtil {
       messageProducer.send(objectMessage);
     } catch (JMSException e) {
       log.log(Level.SEVERE,"Error  JSMException  ", e);
+      throw new RuntimeException(e);
     } catch (Exception e) {
       log.log(Level.SEVERE, "Error Exception  ",  e);
+      throw new RuntimeException(e);
+      
     } finally {
       try {
         if (messageProducer != null) {

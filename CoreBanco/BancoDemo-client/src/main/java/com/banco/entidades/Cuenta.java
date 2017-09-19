@@ -4,6 +4,8 @@
  */
 package com.banco.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +31,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author jmartinez
  */
+@JsonIgnoreProperties(ignoreUnknown = true) 
 @Entity
 @Table(name = "CUENTA")
 @NamedQueries({
@@ -100,6 +103,7 @@ public class Cuenta implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
+    @JsonIgnore
     public Collection<Movimiento> getMovimientos() {
         return movimientos;
     }

@@ -1,10 +1,11 @@
 var app = angular.module('demobanco');
 // Create a controller with name clientesListController to bind to the grid section.
-app.controller('clientesListController', function ($scope, $rootScope,$state ,clienteService, modalService) {
+app.controller('clientesListController', function ($scope, $rootScope,$state ,clienteService, 
+                                                      modalService,$filter) {
     // Initialize required information: sorting, the first page to show and the grid options.
     $scope.sortInfo = {fields: ['id'], directions: ['asc']};
     $scope.clientes = {currentPage: 1};
-    $scope.searchText = null;
+    $scope.searchText = "";
 
     $scope.gridOptions = {
         data: 'clientes.list',
@@ -36,7 +37,10 @@ app.controller('clientesListController', function ($scope, $rootScope,$state ,cl
     
     $scope.searchTextChanged = function(){
       console.log('Ingreso a funcion searchTextChanged');
+      $scope.clientes.list = $filter('filter')($scope.clientes.list, $scope.searchText);
+      console.log('Se filtro lista de clientes con criterio :' + $scope.searchText);
     };
+    
 
     // Refresh the grid, calling the appropriate rest method.
     $scope.refreshGrid = function () {
